@@ -45,14 +45,14 @@ std::tuple<State, ExtractionRange>
 AnyBefore<DispatchT, LockPolicyT, ContainerT, QueueMonitorT, AccessStampT, AccessValueT>::locate_follower_impl(
   const CaptureRange<stamp_type>& range) const
 {
-  // The boundary before which messages are valid and after which they are not. Non-inclusive.
+  // The boundary before which messages are valid and after which they are not. Inclusive at the boundary.
   const stamp_type boundary = range.upper_stamp - delay_;
 
   auto itr = PolicyType::queue_.begin();
 
   // Collect all the messages that are earlier than the first driving message's
   // timestamp minus the delay
-  while (itr != PolicyType::queue_.end() and AccessStampT::get(*itr) < boundary)
+  while (itr != PolicyType::queue_.end() and AccessStampT::get(*itr) <= boundary)
   {
     ++itr;
   }
