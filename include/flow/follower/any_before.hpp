@@ -65,7 +65,7 @@ public:
    */
   explicit AnyBefore(
     const offset_type& delay,
-    const bool inclusive_capture_boundary,
+    const bool inclusive_capture_boundary = false,
     const ContainerT& container = ContainerT{},
     const QueueMonitorT& queue_monitor = QueueMonitorT{});
 
