@@ -26,7 +26,7 @@ struct FollowerAnyBefore : ::testing::Test, AnyBefore<Dispatch<int, optional<int
 
   std::vector<Dispatch<int, optional<int>>> data;
 
-  FollowerAnyBefore() : AnyBefore<Dispatch<int, optional<int>>, NoLock>{DELAY} {}
+  FollowerAnyBefore() : AnyBefore<Dispatch<int, optional<int>>, NoLock>{DELAY, false} {}
 
   void SetUp() final
   {
@@ -65,9 +65,9 @@ TEST_F(FollowerAnyBefore, CapturePrimedOnDataAtBoundary)
 
   ASSERT_EQ(this->size(), 1U);
   ASSERT_EQ(State::PRIMED, this->capture(std::back_inserter(data), t_range));
-  ASSERT_EQ(this->size(), 0U);
+  ASSERT_EQ(this->size(), 1U);
 
-  ASSERT_EQ(data.size(), 1U);
+  ASSERT_EQ(data.size(), 0U);
 }
 
 
@@ -123,9 +123,9 @@ TEST_F(FollowerAnyBefore, CapturePrimedOnDataAnyBeforeAndAtBoundary)
 
   ASSERT_EQ(this->size(), 2U);
   ASSERT_EQ(State::PRIMED, this->capture(std::back_inserter(data), t_range));
-  ASSERT_EQ(this->size(), 0U);
+  ASSERT_EQ(this->size(), 1U);
 
-  ASSERT_EQ(data.size(), 2U);
+  ASSERT_EQ(data.size(), 1U);
 }
 
 
@@ -155,9 +155,9 @@ TEST_F(FollowerAnyBefore, CapturePrimedMultiDataAnyBeforeAndAtBoundary)
 
   ASSERT_EQ(this->size(), 3U);
   ASSERT_EQ(State::PRIMED, this->capture(std::back_inserter(data), t_range));
-  ASSERT_EQ(this->size(), 0U);
+  ASSERT_EQ(this->size(), 1U);
 
-  ASSERT_EQ(data.size(), 3U);
+  ASSERT_EQ(data.size(), 2U);
 }
 
 

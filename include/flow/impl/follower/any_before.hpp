@@ -27,10 +27,12 @@ template <
   typename AccessValueT>
 AnyBefore<DispatchT, LockPolicyT, ContainerT, QueueMonitorT, AccessStampT, AccessValueT>::AnyBefore(
   const offset_type& delay,
+  const bool inclusive_capture_boundary,
   const ContainerT& container,
   const QueueMonitorT& queue_monitor) :
     PolicyType{container, queue_monitor},
-    delay_{delay}
+    delay_{delay},
+    inclusive_capture_boundary_{inclusive_capture_boundary}
 {}
 
 
@@ -54,6 +56,10 @@ AnyBefore<DispatchT, LockPolicyT, ContainerT, QueueMonitorT, AccessStampT, Acces
   // timestamp minus the delay
   while (itr != PolicyType::queue_.end() and AccessStampT::get(*itr) <= boundary)
   {
+    if (!inclusive_capture_boundary_ && AccessStampT::get(*itr) == boundary)
+    {
+      break;
+    }
     ++itr;
   }
 

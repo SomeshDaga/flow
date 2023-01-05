@@ -65,6 +65,7 @@ public:
    */
   explicit AnyBefore(
     const offset_type& delay,
+    const bool inclusive_capture_boundary,
     const ContainerT& container = ContainerT{},
     const QueueMonitorT& queue_monitor = QueueMonitorT{});
 
@@ -109,6 +110,9 @@ private:
 
   /// Capture delay
   offset_type delay_;
+
+  /// Capture messages at the capture boundary
+  const bool inclusive_capture_boundary_ = false;
 };
 
 }  // namespace follower
